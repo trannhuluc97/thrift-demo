@@ -19,7 +19,7 @@ public class ThriftClientPool {
     private final int port;
     private final ObjectPool<TUserService.Client> pool;
 
-    public ThriftClientPool(String host, int port) throws Exception {
+    public ThriftClientPool(String host, int port, int timeout) throws Exception {
         this.host = host;
         this.port = port;
 
@@ -32,7 +32,7 @@ public class ThriftClientPool {
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
         config.setMinIdle(1);
         config.setMaxIdle(10);
-        config.setMaxWaitMillis(1000L);
+        config.setMaxWaitMillis(timeout);
 
         // Simple factory creating new clients on borrow
         BasePooledObjectFactory<TUserService.Client> factory = new BasePooledObjectFactory<TUserService.Client>() {

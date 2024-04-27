@@ -10,8 +10,12 @@ public class UserService {
 
     private final TUserClient client;
 
-    public UserService(@Value("${TUserClient.host}") String host, @Value("${TUserClient.port}") int port) {
-        this.client = new TUserClient(host, port);
+    public UserService(
+            @Value("${TUserClient.host}") String host,
+            @Value("${TUserClient.port}") int port,
+            @Value("${TUserClient.timeout}") int timeout,
+            @Value("${TUserClient.nRetry}") int nRetry) {
+        this.client = new TUserClient(host, port, timeout, nRetry);
     }
 
     public TUserResult getUser(int userId) {

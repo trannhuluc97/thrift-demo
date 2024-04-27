@@ -14,6 +14,8 @@ public class TUserClient {
 
     private String host;
     private int port;
+    private int timeout;
+    private int nRetry;
     private static TSource source;
     ThriftClientPool pool;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -21,10 +23,13 @@ public class TUserClient {
     public static int Integer_NO_CONNECTION = -1001;
     public static int Integer_BAD_REQUEST = -1002;
 
-    public TUserClient(String host, int port) {
+    public TUserClient(String host, int port, int timeout, int nRetry) {
         _configSource();
+
         this.host = host;
         this.port = port;
+        this.timeout = timeout;
+        this.nRetry = nRetry;
     }
 
     private void _configSource() {
@@ -43,42 +48,22 @@ public class TUserClient {
 
     public TUserResult getUserById(int userId) {
         try {
-            if (pool == null) {
-                pool = new ThriftClientPool(host, port);
+            for (int retry = 0; retry < nRetry; retry++) {
+                if (pool == null) {
+                    pool = new ThriftClientPool(host, port, timeout);
+                }
+                TUserService.Client client = pool.getClient();
+                if (client == null) {
+                    return new TUserResult(Integer_NO_CONNECTION);
+                }
+                return client.getUserById(userId, source);
             }
-            TUserService.Client client = pool.getClient();
-            if (client == null) {
-                return new TUserResult(Integer_NO_CONNECTION);
-            }
-            return client.getUserById(userId, source);
         } catch (Exception e) {
             e.printStackTrace();
             return new TUserResult(Integer_BAD_REQUEST);
         }
+        return new TUserResult(Integer_BAD_REQUEST);
     }
-
-//    public TUserResult getUserById(int userId) {
-//        TUserService.Client client;
-//        TTransport transport = null;
-//        try {
-//            TUserService.Client client1 = pool.getClient();
-//
-//
-//            transport = new TSocket(host, port);
-//            transport.open();
-//            logger.info("getUserById | Connected to {} on {} | source {}", host, port, source);
-//            TProtocol protocol = new TBinaryProtocol(transport);
-//            client = new TUserService.Client(protocol);
-//            return client.getUserById(userId, source);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return new TUserResult(Integer_NO_CONNECTION);
-//        } finally {
-//            if (transport != null) {
-//                transport.close();
-//            }
-//        }
-//    }
 
     private static String getIpAddr() {
         String ipAddr;
