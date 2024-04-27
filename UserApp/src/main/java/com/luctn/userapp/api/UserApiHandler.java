@@ -16,7 +16,7 @@ public class UserApiHandler {
     UserService userService;
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public TUserResult findContact(@PathVariable("id") long id) {
+    public TUserResult findUser(@PathVariable("id") long id) {
         return userService.getUser(123);
     }
 }

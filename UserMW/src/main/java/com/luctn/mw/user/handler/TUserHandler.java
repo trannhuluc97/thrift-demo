@@ -8,6 +8,13 @@ public class TUserHandler implements TUserService.Iface {
 
     @Override
     public TUserResult getUserById(int userId, TSource src) throws TException, org.apache.thrift.TException {
+
+//        try {
+//            Thread.sleep(1500);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+
         TUserResult result = new TUserResult(0);
         result.setMessage("Success");
 
