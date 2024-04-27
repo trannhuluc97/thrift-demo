@@ -1,5 +1,6 @@
 package com.luctn.user.thrift.wrapper;
 
+
 import com.luctn.user.thrift.TUser;
 import com.luctn.user.thrift.TUserService;
 import org.apache.thrift.protocol.TBinaryProtocol;
