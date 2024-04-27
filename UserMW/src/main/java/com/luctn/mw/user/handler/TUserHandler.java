@@ -2,6 +2,7 @@ package com.luctn.mw.user.handler;
 
 import com.luctn.user.thrift.TException;
 import com.luctn.user.thrift.TUser;
+import com.luctn.user.thrift.TUserResult;
 import com.luctn.user.thrift.TUserService;
 
 import java.util.List;
@@ -9,11 +10,16 @@ import java.util.List;
 public class TUserHandler implements TUserService.Iface {
 
     @Override
-    public TUser get(int i) throws TException, org.apache.thrift.TException {
+    public TUserResult getUserById(int userId) throws TException, org.apache.thrift.TException {
+        TUserResult result = new TUserResult(0);
+        result.setMessage("Success");
+
         TUser user = new TUser();
-        user.setStudentid(String.valueOf(i));
-        user.setStudentName("Luc");
-        return user;
+        user.setId(userId);
+        user.setName("Luc");
+
+        result.setData(user);
+        return result;
     }
 
     @Override

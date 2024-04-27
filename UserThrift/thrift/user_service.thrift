@@ -6,14 +6,20 @@ exception TException {
 }
 
 struct TUser {
-    1: i32 id,
-    2: string studentName, 
-    3: optional string studentid
+    1: required i32 id,
+    2: string name, 
+    3: i32 age
+}
+
+struct TUserResult {
+    1: required i32 error,
+    2: optional string message,
+    3: optional TUser data
 }
 
 service TUserService {
 
-    TUser get(1:i32 id) throws (1:TException e),
+    TUserResult getUserById(1:i32 id) throws (1:TException e),
 
     void save(1:TUser resource) throws (1:TException e),
 
@@ -21,5 +27,3 @@ service TUserService {
 
     bool ping() throws (1:TException e)
 }
-
-//thrift -r --gen java user_service.thrift

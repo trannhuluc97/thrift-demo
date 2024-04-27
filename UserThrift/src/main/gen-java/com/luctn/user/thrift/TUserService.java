@@ -12,7 +12,7 @@ public class TUserService {
 
   public interface Iface {
 
-    public TUser get(int id) throws TException, org.apache.thrift.TException;
+    public TUserResult getUserById(int id) throws TException, org.apache.thrift.TException;
 
     public void save(TUser resource) throws TException, org.apache.thrift.TException;
 
@@ -24,7 +24,7 @@ public class TUserService {
 
   public interface AsyncIface {
 
-    public void get(int id, org.apache.thrift.async.AsyncMethodCallback<TUser> resultHandler) throws org.apache.thrift.TException;
+    public void getUserById(int id, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException;
 
     public void save(TUser resource, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException;
 
@@ -57,30 +57,30 @@ public class TUserService {
     }
 
     @Override
-    public TUser get(int id) throws TException, org.apache.thrift.TException
+    public TUserResult getUserById(int id) throws TException, org.apache.thrift.TException
     {
-      send_get(id);
-      return recv_get();
+      send_getUserById(id);
+      return recv_getUserById();
     }
 
-    public void send_get(int id) throws org.apache.thrift.TException
+    public void send_getUserById(int id) throws org.apache.thrift.TException
     {
-      get_args args = new get_args();
+      getUserById_args args = new getUserById_args();
       args.setId(id);
-      sendBase("get", args);
+      sendBase("getUserById", args);
     }
 
-    public TUser recv_get() throws TException, org.apache.thrift.TException
+    public TUserResult recv_getUserById() throws TException, org.apache.thrift.TException
     {
-      get_result result = new get_result();
-      receiveBase(result, "get");
+      getUserById_result result = new getUserById_result();
+      receiveBase(result, "getUserById");
       if (result.isSetSuccess()) {
         return result.success;
       }
       if (result.e != null) {
         throw result.e;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "get failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getUserById failed: unknown result");
     }
 
     @Override
@@ -179,37 +179,37 @@ public class TUserService {
     }
 
     @Override
-    public void get(int id, org.apache.thrift.async.AsyncMethodCallback<TUser> resultHandler) throws org.apache.thrift.TException {
+    public void getUserById(int id, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      get_call method_call = new get_call(id, resultHandler, this, ___protocolFactory, ___transport);
+      getUserById_call method_call = new getUserById_call(id, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class get_call extends org.apache.thrift.async.TAsyncMethodCall<TUser> {
+    public static class getUserById_call extends org.apache.thrift.async.TAsyncMethodCall<TUserResult> {
       private int id;
-      public get_call(int id, org.apache.thrift.async.AsyncMethodCallback<TUser> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public getUserById_call(int id, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.id = id;
       }
 
       @Override
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("get", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        get_args args = new get_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getUserById", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getUserById_args args = new getUserById_args();
         args.setId(id);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
       @Override
-      public TUser getResult() throws TException, org.apache.thrift.TException {
+      public TUserResult getResult() throws TException, org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new java.lang.IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_get();
+        return (new Client(prot)).recv_getUserById();
       }
     }
 
@@ -326,21 +326,21 @@ public class TUserService {
     }
 
     private static <I extends Iface> java.util.Map<java.lang.String,  org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>> getProcessMap(java.util.Map<java.lang.String, org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("get", new get());
+      processMap.put("getUserById", new getUserById());
       processMap.put("save", new save());
       processMap.put("getList", new getList());
       processMap.put("ping", new ping());
       return processMap;
     }
 
-    public static class get<I extends Iface> extends org.apache.thrift.ProcessFunction<I, get_args> {
-      public get() {
-        super("get");
+    public static class getUserById<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getUserById_args> {
+      public getUserById() {
+        super("getUserById");
       }
 
       @Override
-      public get_args getEmptyArgsInstance() {
-        return new get_args();
+      public getUserById_args getEmptyArgsInstance() {
+        return new getUserById_args();
       }
 
       @Override
@@ -354,10 +354,10 @@ public class TUserService {
       }
 
       @Override
-      public get_result getResult(I iface, get_args args) throws org.apache.thrift.TException {
-        get_result result = new get_result();
+      public getUserById_result getResult(I iface, getUserById_args args) throws org.apache.thrift.TException {
+        getUserById_result result = new getUserById_result();
         try {
-          result.success = iface.get(args.id);
+          result.success = iface.getUserById(args.id);
         } catch (TException e) {
           result.e = e;
         }
@@ -475,30 +475,30 @@ public class TUserService {
     }
 
     private static <I extends AsyncIface> java.util.Map<java.lang.String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(java.util.Map<java.lang.String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
-      processMap.put("get", new get());
+      processMap.put("getUserById", new getUserById());
       processMap.put("save", new save());
       processMap.put("getList", new getList());
       processMap.put("ping", new ping());
       return processMap;
     }
 
-    public static class get<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, get_args, TUser> {
-      public get() {
-        super("get");
+    public static class getUserById<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getUserById_args, TUserResult> {
+      public getUserById() {
+        super("getUserById");
       }
 
       @Override
-      public get_args getEmptyArgsInstance() {
-        return new get_args();
+      public getUserById_args getEmptyArgsInstance() {
+        return new getUserById_args();
       }
 
       @Override
-      public org.apache.thrift.async.AsyncMethodCallback<TUser> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
+      public org.apache.thrift.async.AsyncMethodCallback<TUserResult> getResultHandler(final org.apache.thrift.server.AbstractNonblockingServer.AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new org.apache.thrift.async.AsyncMethodCallback<TUser>() { 
+        return new org.apache.thrift.async.AsyncMethodCallback<TUserResult>() { 
           @Override
-          public void onComplete(TUser o) {
-            get_result result = new get_result();
+          public void onComplete(TUserResult o) {
+            getUserById_result result = new getUserById_result();
             result.success = o;
             try {
               fcall.sendResponse(fb, result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
@@ -514,7 +514,7 @@ public class TUserService {
           public void onError(java.lang.Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TSerializable msg;
-            get_result result = new get_result();
+            getUserById_result result = new getUserById_result();
             if (e instanceof TException) {
               result.e = (TException) e;
               result.setEIsSet(true);
@@ -548,8 +548,8 @@ public class TUserService {
       }
 
       @Override
-      public void start(I iface, get_args args, org.apache.thrift.async.AsyncMethodCallback<TUser> resultHandler) throws org.apache.thrift.TException {
-        iface.get(args.id,resultHandler);
+      public void start(I iface, getUserById_args args, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException {
+        iface.getUserById(args.id,resultHandler);
       }
     }
 
@@ -769,13 +769,13 @@ public class TUserService {
   }
 
   @SuppressWarnings({"cast", "rawtypes", "serial", "unchecked", "unused"})
-  public static class get_args implements org.apache.thrift.TBase<get_args, get_args._Fields>, java.io.Serializable, Cloneable, Comparable<get_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("get_args");
+  public static class getUserById_args implements org.apache.thrift.TBase<getUserById_args, getUserById_args._Fields>, java.io.Serializable, Cloneable, Comparable<getUserById_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserById_args");
 
     private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I32, (short)1);
 
-    private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new get_argsStandardSchemeFactory();
-    private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new get_argsTupleSchemeFactory();
+    private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getUserById_argsStandardSchemeFactory();
+    private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getUserById_argsTupleSchemeFactory();
 
     public int id; // required
 
@@ -850,13 +850,13 @@ public class TUserService {
       tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(get_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserById_args.class, metaDataMap);
     }
 
-    public get_args() {
+    public getUserById_args() {
     }
 
-    public get_args(
+    public getUserById_args(
       int id)
     {
       this();
@@ -867,14 +867,14 @@ public class TUserService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public get_args(get_args other) {
+    public getUserById_args(getUserById_args other) {
       __isset_bitfield = other.__isset_bitfield;
       this.id = other.id;
     }
 
     @Override
-    public get_args deepCopy() {
-      return new get_args(this);
+    public getUserById_args deepCopy() {
+      return new getUserById_args(this);
     }
 
     @Override
@@ -887,7 +887,7 @@ public class TUserService {
       return this.id;
     }
 
-    public get_args setId(int id) {
+    public getUserById_args setId(int id) {
       this.id = id;
       setIdIsSet(true);
       return this;
@@ -947,12 +947,12 @@ public class TUserService {
 
     @Override
     public boolean equals(java.lang.Object that) {
-      if (that instanceof get_args)
-        return this.equals((get_args)that);
+      if (that instanceof getUserById_args)
+        return this.equals((getUserById_args)that);
       return false;
     }
 
-    public boolean equals(get_args that) {
+    public boolean equals(getUserById_args that) {
       if (that == null)
         return false;
       if (this == that)
@@ -980,7 +980,7 @@ public class TUserService {
     }
 
     @Override
-    public int compareTo(get_args other) {
+    public int compareTo(getUserById_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -1018,7 +1018,7 @@ public class TUserService {
 
     @Override
     public java.lang.String toString() {
-      java.lang.StringBuilder sb = new java.lang.StringBuilder("get_args(");
+      java.lang.StringBuilder sb = new java.lang.StringBuilder("getUserById_args(");
       boolean first = true;
 
       sb.append("id:");
@@ -1051,17 +1051,17 @@ public class TUserService {
       }
     }
 
-    private static class get_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+    private static class getUserById_argsStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
       @Override
-      public get_argsStandardScheme getScheme() {
-        return new get_argsStandardScheme();
+      public getUserById_argsStandardScheme getScheme() {
+        return new getUserById_argsStandardScheme();
       }
     }
 
-    private static class get_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<get_args> {
+    private static class getUserById_argsStandardScheme extends org.apache.thrift.scheme.StandardScheme<getUserById_args> {
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol iprot, get_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getUserById_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1091,7 +1091,7 @@ public class TUserService {
       }
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol oprot, get_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getUserById_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -1104,17 +1104,17 @@ public class TUserService {
 
     }
 
-    private static class get_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+    private static class getUserById_argsTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
       @Override
-      public get_argsTupleScheme getScheme() {
-        return new get_argsTupleScheme();
+      public getUserById_argsTupleScheme getScheme() {
+        return new getUserById_argsTupleScheme();
       }
     }
 
-    private static class get_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<get_args> {
+    private static class getUserById_argsTupleScheme extends org.apache.thrift.scheme.TupleScheme<getUserById_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, get_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getUserById_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet optionals = new java.util.BitSet();
         if (struct.isSetId()) {
@@ -1127,7 +1127,7 @@ public class TUserService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, get_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getUserById_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
@@ -1143,16 +1143,16 @@ public class TUserService {
   }
 
   @SuppressWarnings({"cast", "rawtypes", "serial", "unchecked", "unused"})
-  public static class get_result implements org.apache.thrift.TBase<get_result, get_result._Fields>, java.io.Serializable, Cloneable, Comparable<get_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("get_result");
+  public static class getUserById_result implements org.apache.thrift.TBase<getUserById_result, getUserById_result._Fields>, java.io.Serializable, Cloneable, Comparable<getUserById_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserById_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
     private static final org.apache.thrift.protocol.TField E_FIELD_DESC = new org.apache.thrift.protocol.TField("e", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
-    private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new get_resultStandardSchemeFactory();
-    private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new get_resultTupleSchemeFactory();
+    private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getUserById_resultStandardSchemeFactory();
+    private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getUserById_resultTupleSchemeFactory();
 
-    public @org.apache.thrift.annotation.Nullable TUser success; // required
+    public @org.apache.thrift.annotation.Nullable TUserResult success; // required
     public @org.apache.thrift.annotation.Nullable TException e; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -1225,18 +1225,18 @@ public class TUserService {
     static {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TUser.class)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TUserResult.class)));
       tmpMap.put(_Fields.E, new org.apache.thrift.meta_data.FieldMetaData("e", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TException.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(get_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserById_result.class, metaDataMap);
     }
 
-    public get_result() {
+    public getUserById_result() {
     }
 
-    public get_result(
-      TUser success,
+    public getUserById_result(
+      TUserResult success,
       TException e)
     {
       this();
@@ -1247,9 +1247,9 @@ public class TUserService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public get_result(get_result other) {
+    public getUserById_result(getUserById_result other) {
       if (other.isSetSuccess()) {
-        this.success = new TUser(other.success);
+        this.success = new TUserResult(other.success);
       }
       if (other.isSetE()) {
         this.e = new TException(other.e);
@@ -1257,8 +1257,8 @@ public class TUserService {
     }
 
     @Override
-    public get_result deepCopy() {
-      return new get_result(this);
+    public getUserById_result deepCopy() {
+      return new getUserById_result(this);
     }
 
     @Override
@@ -1268,11 +1268,11 @@ public class TUserService {
     }
 
     @org.apache.thrift.annotation.Nullable
-    public TUser getSuccess() {
+    public TUserResult getSuccess() {
       return this.success;
     }
 
-    public get_result setSuccess(@org.apache.thrift.annotation.Nullable TUser success) {
+    public getUserById_result setSuccess(@org.apache.thrift.annotation.Nullable TUserResult success) {
       this.success = success;
       return this;
     }
@@ -1297,7 +1297,7 @@ public class TUserService {
       return this.e;
     }
 
-    public get_result setE(@org.apache.thrift.annotation.Nullable TException e) {
+    public getUserById_result setE(@org.apache.thrift.annotation.Nullable TException e) {
       this.e = e;
       return this;
     }
@@ -1324,7 +1324,7 @@ public class TUserService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((TUser)value);
+          setSuccess((TUserResult)value);
         }
         break;
 
@@ -1371,12 +1371,12 @@ public class TUserService {
 
     @Override
     public boolean equals(java.lang.Object that) {
-      if (that instanceof get_result)
-        return this.equals((get_result)that);
+      if (that instanceof getUserById_result)
+        return this.equals((getUserById_result)that);
       return false;
     }
 
-    public boolean equals(get_result that) {
+    public boolean equals(getUserById_result that) {
       if (that == null)
         return false;
       if (this == that)
@@ -1419,7 +1419,7 @@ public class TUserService {
     }
 
     @Override
-    public int compareTo(get_result other) {
+    public int compareTo(getUserById_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -1466,7 +1466,7 @@ public class TUserService {
 
     @Override
     public java.lang.String toString() {
-      java.lang.StringBuilder sb = new java.lang.StringBuilder("get_result(");
+      java.lang.StringBuilder sb = new java.lang.StringBuilder("getUserById_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1512,17 +1512,17 @@ public class TUserService {
       }
     }
 
-    private static class get_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+    private static class getUserById_resultStandardSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
       @Override
-      public get_resultStandardScheme getScheme() {
-        return new get_resultStandardScheme();
+      public getUserById_resultStandardScheme getScheme() {
+        return new getUserById_resultStandardScheme();
       }
     }
 
-    private static class get_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<get_result> {
+    private static class getUserById_resultStandardScheme extends org.apache.thrift.scheme.StandardScheme<getUserById_result> {
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol iprot, get_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getUserById_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1534,7 +1534,7 @@ public class TUserService {
           switch (schemeField.id) {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new TUser();
+                struct.success = new TUserResult();
                 struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
@@ -1562,7 +1562,7 @@ public class TUserService {
       }
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol oprot, get_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getUserById_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -1582,17 +1582,17 @@ public class TUserService {
 
     }
 
-    private static class get_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
+    private static class getUserById_resultTupleSchemeFactory implements org.apache.thrift.scheme.SchemeFactory {
       @Override
-      public get_resultTupleScheme getScheme() {
-        return new get_resultTupleScheme();
+      public getUserById_resultTupleScheme getScheme() {
+        return new getUserById_resultTupleScheme();
       }
     }
 
-    private static class get_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<get_result> {
+    private static class getUserById_resultTupleScheme extends org.apache.thrift.scheme.TupleScheme<getUserById_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, get_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getUserById_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet optionals = new java.util.BitSet();
         if (struct.isSetSuccess()) {
@@ -1611,11 +1611,11 @@ public class TUserService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, get_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getUserById_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
-          struct.success = new TUser();
+          struct.success = new TUserResult();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
