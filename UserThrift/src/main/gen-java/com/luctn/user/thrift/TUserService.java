@@ -12,7 +12,7 @@ public class TUserService {
 
   public interface Iface {
 
-    public TUserResult getUserById(int id) throws TException, org.apache.thrift.TException;
+    public TUserResult getUserById(int id, TSource src) throws TException, org.apache.thrift.TException;
 
     public void save(TUser resource) throws TException, org.apache.thrift.TException;
 
@@ -24,7 +24,7 @@ public class TUserService {
 
   public interface AsyncIface {
 
-    public void getUserById(int id, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException;
+    public void getUserById(int id, TSource src, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException;
 
     public void save(TUser resource, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws org.apache.thrift.TException;
 
@@ -57,16 +57,17 @@ public class TUserService {
     }
 
     @Override
-    public TUserResult getUserById(int id) throws TException, org.apache.thrift.TException
+    public TUserResult getUserById(int id, TSource src) throws TException, org.apache.thrift.TException
     {
-      send_getUserById(id);
+      send_getUserById(id, src);
       return recv_getUserById();
     }
 
-    public void send_getUserById(int id) throws org.apache.thrift.TException
+    public void send_getUserById(int id, TSource src) throws org.apache.thrift.TException
     {
       getUserById_args args = new getUserById_args();
       args.setId(id);
+      args.setSrc(src);
       sendBase("getUserById", args);
     }
 
@@ -179,18 +180,20 @@ public class TUserService {
     }
 
     @Override
-    public void getUserById(int id, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException {
+    public void getUserById(int id, TSource src, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getUserById_call method_call = new getUserById_call(id, resultHandler, this, ___protocolFactory, ___transport);
+      getUserById_call method_call = new getUserById_call(id, src, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getUserById_call extends org.apache.thrift.async.TAsyncMethodCall<TUserResult> {
       private int id;
-      public getUserById_call(int id, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private TSource src;
+      public getUserById_call(int id, TSource src, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.id = id;
+        this.src = src;
       }
 
       @Override
@@ -198,6 +201,7 @@ public class TUserService {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getUserById", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getUserById_args args = new getUserById_args();
         args.setId(id);
+        args.setSrc(src);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -357,7 +361,7 @@ public class TUserService {
       public getUserById_result getResult(I iface, getUserById_args args) throws org.apache.thrift.TException {
         getUserById_result result = new getUserById_result();
         try {
-          result.success = iface.getUserById(args.id);
+          result.success = iface.getUserById(args.id, args.src);
         } catch (TException e) {
           result.e = e;
         }
@@ -549,7 +553,7 @@ public class TUserService {
 
       @Override
       public void start(I iface, getUserById_args args, org.apache.thrift.async.AsyncMethodCallback<TUserResult> resultHandler) throws org.apache.thrift.TException {
-        iface.getUserById(args.id,resultHandler);
+        iface.getUserById(args.id, args.src,resultHandler);
       }
     }
 
@@ -773,15 +777,18 @@ public class TUserService {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUserById_args");
 
     private static final org.apache.thrift.protocol.TField ID_FIELD_DESC = new org.apache.thrift.protocol.TField("id", org.apache.thrift.protocol.TType.I32, (short)1);
+    private static final org.apache.thrift.protocol.TField SRC_FIELD_DESC = new org.apache.thrift.protocol.TField("src", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new getUserById_argsStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new getUserById_argsTupleSchemeFactory();
 
     public int id; // required
+    public @org.apache.thrift.annotation.Nullable TSource src; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      ID((short)1, "id");
+      ID((short)1, "id"),
+      SRC((short)2, "src");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -799,6 +806,8 @@ public class TUserService {
         switch(fieldId) {
           case 1: // ID
             return ID;
+          case 2: // SRC
+            return SRC;
           default:
             return null;
         }
@@ -849,6 +858,8 @@ public class TUserService {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.ID, new org.apache.thrift.meta_data.FieldMetaData("id", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.SRC, new org.apache.thrift.meta_data.FieldMetaData("src", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TSource.class)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUserById_args.class, metaDataMap);
     }
@@ -857,11 +868,13 @@ public class TUserService {
     }
 
     public getUserById_args(
-      int id)
+      int id,
+      TSource src)
     {
       this();
       this.id = id;
       setIdIsSet(true);
+      this.src = src;
     }
 
     /**
@@ -870,6 +883,9 @@ public class TUserService {
     public getUserById_args(getUserById_args other) {
       __isset_bitfield = other.__isset_bitfield;
       this.id = other.id;
+      if (other.isSetSrc()) {
+        this.src = new TSource(other.src);
+      }
     }
 
     @Override
@@ -881,6 +897,7 @@ public class TUserService {
     public void clear() {
       setIdIsSet(false);
       this.id = 0;
+      this.src = null;
     }
 
     public int getId() {
@@ -906,6 +923,31 @@ public class TUserService {
       __isset_bitfield = org.apache.thrift.EncodingUtils.setBit(__isset_bitfield, __ID_ISSET_ID, value);
     }
 
+    @org.apache.thrift.annotation.Nullable
+    public TSource getSrc() {
+      return this.src;
+    }
+
+    public getUserById_args setSrc(@org.apache.thrift.annotation.Nullable TSource src) {
+      this.src = src;
+      return this;
+    }
+
+    public void unsetSrc() {
+      this.src = null;
+    }
+
+    /** Returns true if field src is set (has been assigned a value) and false otherwise */
+    public boolean isSetSrc() {
+      return this.src != null;
+    }
+
+    public void setSrcIsSet(boolean value) {
+      if (!value) {
+        this.src = null;
+      }
+    }
+
     @Override
     public void setFieldValue(_Fields field, @org.apache.thrift.annotation.Nullable java.lang.Object value) {
       switch (field) {
@@ -914,6 +956,14 @@ public class TUserService {
           unsetId();
         } else {
           setId((java.lang.Integer)value);
+        }
+        break;
+
+      case SRC:
+        if (value == null) {
+          unsetSrc();
+        } else {
+          setSrc((TSource)value);
         }
         break;
 
@@ -926,6 +976,9 @@ public class TUserService {
       switch (field) {
       case ID:
         return getId();
+
+      case SRC:
+        return getSrc();
 
       }
       throw new java.lang.IllegalStateException();
@@ -941,6 +994,8 @@ public class TUserService {
       switch (field) {
       case ID:
         return isSetId();
+      case SRC:
+        return isSetSrc();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -967,6 +1022,15 @@ public class TUserService {
           return false;
       }
 
+      boolean this_present_src = true && this.isSetSrc();
+      boolean that_present_src = true && that.isSetSrc();
+      if (this_present_src || that_present_src) {
+        if (!(this_present_src && that_present_src))
+          return false;
+        if (!this.src.equals(that.src))
+          return false;
+      }
+
       return true;
     }
 
@@ -975,6 +1039,10 @@ public class TUserService {
       int hashCode = 1;
 
       hashCode = hashCode * 8191 + id;
+
+      hashCode = hashCode * 8191 + ((isSetSrc()) ? 131071 : 524287);
+      if (isSetSrc())
+        hashCode = hashCode * 8191 + src.hashCode();
 
       return hashCode;
     }
@@ -993,6 +1061,16 @@ public class TUserService {
       }
       if (isSetId()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.id, other.id);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.compare(isSetSrc(), other.isSetSrc());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSrc()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.src, other.src);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1024,6 +1102,14 @@ public class TUserService {
       sb.append("id:");
       sb.append(this.id);
       first = false;
+      if (!first) sb.append(", ");
+      sb.append("src:");
+      if (this.src == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.src);
+      }
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -1031,6 +1117,9 @@ public class TUserService {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
+      if (src != null) {
+        src.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -1079,6 +1168,15 @@ public class TUserService {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // SRC
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.src = new TSource();
+                struct.src.read(iprot);
+                struct.setSrcIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -1098,6 +1196,11 @@ public class TUserService {
         oprot.writeFieldBegin(ID_FIELD_DESC);
         oprot.writeI32(struct.id);
         oprot.writeFieldEnd();
+        if (struct.src != null) {
+          oprot.writeFieldBegin(SRC_FIELD_DESC);
+          struct.src.write(oprot);
+          oprot.writeFieldEnd();
+        }
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -1120,19 +1223,30 @@ public class TUserService {
         if (struct.isSetId()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSrc()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetId()) {
           oprot.writeI32(struct.id);
+        }
+        if (struct.isSetSrc()) {
+          struct.src.write(oprot);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getUserById_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.id = iprot.readI32();
           struct.setIdIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.src = new TSource();
+          struct.src.read(iprot);
+          struct.setSrcIsSet(true);
         }
       }
     }

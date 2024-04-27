@@ -5,6 +5,11 @@ exception TException {
     2: string message
 }
 
+struct TSource {
+    1: string appName,
+    2: string ipAddress
+}
+
 struct TUser {
     1: required i32 id,
     2: string name, 
@@ -19,7 +24,7 @@ struct TUserResult {
 
 service TUserService {
 
-    TUserResult getUserById(1:i32 id) throws (1:TException e),
+    TUserResult getUserById(1:i32 id, 2: TSource src) throws (1:TException e),
 
     void save(1:TUser resource) throws (1:TException e),
 

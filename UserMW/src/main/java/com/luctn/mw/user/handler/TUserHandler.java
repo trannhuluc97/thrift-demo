@@ -1,22 +1,20 @@
 package com.luctn.mw.user.handler;
 
-import com.luctn.user.thrift.TException;
-import com.luctn.user.thrift.TUser;
-import com.luctn.user.thrift.TUserResult;
-import com.luctn.user.thrift.TUserService;
+import com.luctn.user.thrift.*;
 
 import java.util.List;
 
 public class TUserHandler implements TUserService.Iface {
 
     @Override
-    public TUserResult getUserById(int userId) throws TException, org.apache.thrift.TException {
+    public TUserResult getUserById(int userId, TSource src) throws TException, org.apache.thrift.TException {
         TUserResult result = new TUserResult(0);
         result.setMessage("Success");
 
         TUser user = new TUser();
         user.setId(userId);
         user.setName("Luc");
+        user.setAge(30);
 
         result.setData(user);
         return result;
