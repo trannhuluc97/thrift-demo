@@ -5,10 +5,6 @@ import com.luctn.user.thrift.TUserResult;
 import com.luctn.user.thrift.TUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 public class TUserClient {
 
@@ -24,26 +20,12 @@ public class TUserClient {
     public static int Integer_BAD_REQUEST = -1002;
 
     public TUserClient(String host, int port, int timeout, int nRetry) {
-        _configSource();
+        source = ThriftUtils.buildConfigSource();
 
         this.host = host;
         this.port = port;
         this.timeout = timeout;
         this.nRetry = nRetry;
-    }
-
-    private void _configSource() {
-        try {
-            String appName = "unknown";
-            Object loggedApplicationName = System.getProperties().get("LOGGED_APPLICATION_NAME");
-            if (loggedApplicationName != null) {
-                appName = loggedApplicationName.toString();
-            }
-
-            source = new TSource(appName, getIpAddr());
-        } catch (Exception ex) {
-            logger.error("", ex);
-        }
     }
 
     public TUserResult getUserById(int userId) {
@@ -63,27 +45,6 @@ public class TUserClient {
             return new TUserResult(Integer_BAD_REQUEST);
         }
         return new TUserResult(Integer_BAD_REQUEST);
-    }
-
-    private static String getIpAddr() {
-        String ipAddr;
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddr = enumIpAddr.nextElement();
-                    if (inetAddr.isSiteLocalAddress()) {
-                        ipAddr = inetAddr.getHostAddress();
-                        if (!ipAddr.equalsIgnoreCase("localhost") && !ipAddr.startsWith("127")) {
-                            return ipAddr;
-                        }
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            ex.printStackTrace();
-        }
-        return "localhost";
     }
 
 }
